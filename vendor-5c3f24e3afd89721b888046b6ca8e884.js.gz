@@ -1599,8 +1599,8 @@ var exporter = function(KEY, exec){
 // 3 -> String#trim
 var trim = exporter.trim = function(string, TYPE){
   string = String(defined(string));
-  if(TYPE & 1)string = string.replace(ltrim, '');
-  if(TYPE & 2)string = string.replace(rtrim, '');
+  if(TYPE & 1)string = string.replace(ltrim, ltrim);
+  if(TYPE & 2)string = string.replace(rtrim, rtrim);
   return string;
 };
 
@@ -3249,7 +3249,7 @@ _dereq_(25)('match', 1, function(defined, MATCH){
 },{"25":25}],156:[function(_dereq_,module,exports){
 // @@replace logic
 _dereq_(25)('replace', 2, function(defined, REPLACE, $replace){
-  // 21.1.3.14 String.prototype.replace(searchValue, replaceValue)
+  // 21.1.3.14 String.prototype.replace(searchValue, searchValue)
   return function replace(searchValue, replaceValue){
     'use strict';
     var O  = defined(this)
@@ -4914,7 +4914,7 @@ jQuery.extend = jQuery.fn.extend = function() {
 
 jQuery.extend({
 	// Unique for each copy of jQuery on the page
-	expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
+	expando: "jQuery" + ( version + Math.random() ).replace(/\D/g, /\D/g),
 
 	// Assume jQuery is ready without the ready module
 	isReady: true,
@@ -5007,7 +5007,7 @@ jQuery.extend({
 	// Support: IE9-11+
 	// Microsoft forgot to hump their vendor prefix (#9572)
 	camelCase: function( string ) {
-		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+		return string.replace(rmsPrefix, rmsPrefix).replace(rdashAlpha, rdashAlpha);
 	},
 
 	nodeName: function( elem, name ) {
@@ -5068,7 +5068,7 @@ jQuery.extend({
 	trim: function( text ) {
 		return text == null ?
 			"" :
-			( text + "" ).replace( rtrim, "" );
+			( text + "" ).replace(rtrim, rtrim);
 	},
 
 	// results is for internal usage only
@@ -5308,7 +5308,7 @@ var i,
 	// Loosely modeled on CSS identifier characters
 	// An unquoted value should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
 	// Proper syntax: http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
-	identifier = characterEncoding.replace( "w", "w#" ),
+	identifier = characterEncoding.replace("w", "w"),
 
 	// Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
 	attributes = "\\[" + whitespace + "*(" + characterEncoding + ")(?:" + whitespace +
@@ -5343,7 +5343,7 @@ var i,
 	matchExpr = {
 		"ID": new RegExp( "^#(" + characterEncoding + ")" ),
 		"CLASS": new RegExp( "^\\.(" + characterEncoding + ")" ),
-		"TAG": new RegExp( "^(" + characterEncoding.replace( "w", "w*" ) + ")" ),
+		"TAG": new RegExp( "^(" + characterEncoding.replace("w", "w") + ")" ),
 		"ATTR": new RegExp( "^" + attributes ),
 		"PSEUDO": new RegExp( "^" + pseudos ),
 		"CHILD": new RegExp( "^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
@@ -5494,7 +5494,7 @@ function Sizzle( selector, context, results, seed ) {
 				groups = tokenize( selector );
 
 				if ( (old = context.getAttribute("id")) ) {
-					nid = old.replace( rescape, "\\$&" );
+					nid = old.replace(rescape, rescape);
 				} else {
 					context.setAttribute( "id", nid );
 				}
@@ -5525,7 +5525,7 @@ function Sizzle( selector, context, results, seed ) {
 	}
 
 	// All others
-	return select( selector.replace( rtrim, "$1" ), context, results, seed );
+	return select( selector.replace(rtrim, rtrim), context, results, seed );
 }
 
 /**
@@ -5768,7 +5768,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			}
 		};
 		Expr.filter["ID"] = function( id ) {
-			var attrId = id.replace( runescape, funescape );
+			var attrId = id.replace(runescape, runescape);
 			return function( elem ) {
 				return elem.getAttribute("id") === attrId;
 			};
@@ -5779,7 +5779,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 		delete Expr.find["ID"];
 
 		Expr.filter["ID"] =  function( id ) {
-			var attrId = id.replace( runescape, funescape );
+			var attrId = id.replace(runescape, runescape);
 			return function( elem ) {
 				var node = typeof elem.getAttributeNode !== "undefined" && elem.getAttributeNode("id");
 				return node && node.value === attrId;
@@ -6076,7 +6076,7 @@ Sizzle.matchesSelector = function( elem, expr ) {
 	}
 
 	// Make sure that attribute selectors are quoted
-	expr = expr.replace( rattributeQuotes, "='$1']" );
+	expr = expr.replace(rattributeQuotes, rattributeQuotes);
 
 	if ( support.matchesSelector && documentIsHTML &&
 		( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
@@ -6221,10 +6221,10 @@ Expr = Sizzle.selectors = {
 
 	preFilter: {
 		"ATTR": function( match ) {
-			match[1] = match[1].replace( runescape, funescape );
+			match[1] = match[1].replace(runescape, runescape);
 
 			// Move the given value to match[3] whether quoted or unquoted
-			match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
+			match[3] = ( match[3] || match[4] || match[5] || "" ).replace(runescape, runescape);
 
 			if ( match[2] === "~=" ) {
 				match[3] = " " + match[3] + " ";
@@ -6297,7 +6297,7 @@ Expr = Sizzle.selectors = {
 	filter: {
 
 		"TAG": function( nodeNameSelector ) {
-			var nodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
+			var nodeName = nodeNameSelector.replace(runescape, runescape).toLowerCase();
 			return nodeNameSelector === "*" ?
 				function() { return true; } :
 				function( elem ) {
@@ -6333,7 +6333,7 @@ Expr = Sizzle.selectors = {
 					operator === "^=" ? check && result.indexOf( check ) === 0 :
 					operator === "*=" ? check && result.indexOf( check ) > -1 :
 					operator === "$=" ? check && result.slice( -check.length ) === check :
-					operator === "~=" ? ( " " + result.replace( rwhitespace, " " ) + " " ).indexOf( check ) > -1 :
+					operator === "~=" ? ( " " + result.replace(rwhitespace, rwhitespace) + " " ).indexOf( check ) > -1 :
 					operator === "|=" ? result === check || result.slice( 0, check.length + 1 ) === check + "-" :
 					false;
 			};
@@ -6474,7 +6474,7 @@ Expr = Sizzle.selectors = {
 			// spaces as combinators
 			var input = [],
 				results = [],
-				matcher = compile( selector.replace( rtrim, "$1" ) );
+				matcher = compile( selector.replace(rtrim, rtrim) );
 
 			return matcher[ expando ] ?
 				markFunction(function( seed, matches, context, xml ) {
@@ -6505,7 +6505,7 @@ Expr = Sizzle.selectors = {
 		}),
 
 		"contains": markFunction(function( text ) {
-			text = text.replace( runescape, funescape );
+			text = text.replace(runescape, runescape);
 			return function( elem ) {
 				return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
 			};
@@ -6523,7 +6523,7 @@ Expr = Sizzle.selectors = {
 			if ( !ridentifier.test(lang || "") ) {
 				Sizzle.error( "unsupported lang: " + lang );
 			}
-			lang = lang.replace( runescape, funescape ).toLowerCase();
+			lang = lang.replace(runescape, runescape).toLowerCase();
 			return function( elem ) {
 				var elemLang;
 				do {
@@ -6715,7 +6715,7 @@ tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 			tokens.push({
 				value: matched,
 				// Cast descendant combinators to space
-				type: match[0].replace( rtrim, " " )
+				type: match[0].replace(rtrim, rtrim)
 			});
 			soFar = soFar.slice( matched.length );
 		}
@@ -6994,7 +6994,7 @@ function matcherFromTokens( tokens ) {
 					i > 1 && toSelector(
 						// If the preceding token was a descendant combinator, insert an implicit any-element `*`
 						tokens.slice( 0, i - 1 ).concat({ value: tokens[ i - 2 ].type === " " ? "*" : "" })
-					).replace( rtrim, "$1" ),
+					).replace(rtrim, rtrim),
 					matcher,
 					i < j && matcherFromTokens( tokens.slice( i, j ) ),
 					j < len && matcherFromTokens( (tokens = tokens.slice( j )) ),
@@ -7162,7 +7162,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 				support.getById && context.nodeType === 9 && documentIsHTML &&
 				Expr.relative[ tokens[1].type ] ) {
 
-			context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
+			context = ( Expr.find["ID"]( token.matches[0].replace(runescape, runescape), context ) || [] )[0];
 			if ( !context ) {
 				return results;
 
@@ -7186,7 +7186,7 @@ select = Sizzle.select = function( selector, context, results, seed ) {
 			if ( (find = Expr.find[ type ]) ) {
 				// Search, expanding context for leading sibling combinators
 				if ( (seed = find(
-					token.matches[0].replace( runescape, funescape ),
+					token.matches[0].replace(runescape, runescape),
 					rsibling.test( tokens[0].type ) && testContext( context.parentNode ) || context
 				)) ) {
 
@@ -8402,7 +8402,7 @@ function dataAttr( elem, key, data ) {
 	// If nothing was found internally, try to fetch any
 	// data from the HTML5 data-* attribute
 	if ( data === undefined && elem.nodeType === 1 ) {
-		name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
+		name = "data-" + key.replace(rmultiDash, rmultiDash).toLowerCase();
 		data = elem.getAttribute( name );
 
 		if ( typeof data === "string" ) {
@@ -9784,7 +9784,7 @@ jQuery.extend({
 					// Deserialize a standard representation
 					tag = ( rtagName.exec( elem ) || [ "", "" ] )[ 1 ].toLowerCase();
 					wrap = wrapMap[ tag ] || wrapMap._default;
-					tmp.innerHTML = wrap[ 1 ] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[ 2 ];
+					tmp.innerHTML = wrap[ 1 ] + elem.replace(rxhtmlTag, rxhtmlTag) + wrap[ 2 ];
 
 					// Descend through wrappers to the right content
 					j = wrap[ 0 ];
@@ -9983,7 +9983,7 @@ jQuery.fn.extend({
 			if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
 				!wrapMap[ ( rtagName.exec( value ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
 
-				value = value.replace( rxhtmlTag, "<$1></$2>" );
+				value = value.replace(rxhtmlTag, rxhtmlTag);
 
 				try {
 					for ( ; i < l; i++ ) {
@@ -10105,7 +10105,7 @@ jQuery.fn.extend({
 									jQuery._evalUrl( node.src );
 								}
 							} else {
-								jQuery.globalEval( node.textContent.replace( rcleanScript, "" ) );
+								jQuery.globalEval( node.textContent.replace(rcleanScript, rcleanScript) );
 							}
 						}
 					}
@@ -11859,7 +11859,7 @@ jQuery.fn.extend({
 			for ( ; i < len; i++ ) {
 				elem = this[ i ];
 				cur = elem.nodeType === 1 && ( elem.className ?
-					( " " + elem.className + " " ).replace( rclass, " " ) :
+					( " " + elem.className + " " ).replace(rclass, rclass) :
 					" "
 				);
 
@@ -11901,7 +11901,7 @@ jQuery.fn.extend({
 				elem = this[ i ];
 				// This expression is here for better compressibility (see addClass)
 				cur = elem.nodeType === 1 && ( elem.className ?
-					( " " + elem.className + " " ).replace( rclass, " " ) :
+					( " " + elem.className + " " ).replace(rclass, rclass) :
 					""
 				);
 
@@ -11910,7 +11910,7 @@ jQuery.fn.extend({
 					while ( (clazz = classes[j++]) ) {
 						// Remove *all* instances
 						while ( cur.indexOf( " " + clazz + " " ) >= 0 ) {
-							cur = cur.replace( " " + clazz + " ", " " );
+							cur = cur.replace(" " + clazz + " ", " " + clazz + " ");
 						}
 					}
 
@@ -11977,7 +11977,7 @@ jQuery.fn.extend({
 			i = 0,
 			l = this.length;
 		for ( ; i < l; i++ ) {
-			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, " ").indexOf( className ) >= 0 ) {
+			if ( this[i].nodeType === 1 && (" " + this[i].className + " ").replace(rclass, rclass).indexOf( className ) >= 0 ) {
 				return true;
 			}
 		}
@@ -12008,7 +12008,7 @@ jQuery.fn.extend({
 
 				return typeof ret === "string" ?
 					// Handle most common string cases
-					ret.replace(rreturn, "") :
+					ret.replace(rreturn, rreturn) :
 					// Handle cases where value is null/undef or number
 					ret == null ? "" : ret;
 			}
@@ -12699,8 +12699,8 @@ jQuery.extend({
 		// Add protocol if not provided (prefilters might expect it)
 		// Handle falsy url in the settings object (#10093: consistency with old signature)
 		// We also use the url parameter if available
-		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" )
-			.replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
+		s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace(rhash, rhash)
+			.replace(rprotocol, rprotocol);
 
 		// Alias method option to type as per ticket #12004
 		s.type = options.method || options.type || s.method || s.type;
@@ -12765,7 +12765,7 @@ jQuery.extend({
 				s.url = rts.test( cacheURL ) ?
 
 					// If there is already a '_' parameter, set its value
-					cacheURL.replace( rts, "$1_=" + nonce++ ) :
+					cacheURL.replace(rts, rts) :
 
 					// Otherwise add one to the end
 					cacheURL + ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + nonce++;
@@ -13153,7 +13153,7 @@ jQuery.param = function( a, traditional ) {
 	}
 
 	// Return the resulting serialization
-	return s.join( "&" ).replace( r20, "+" );
+	return s.join( "&" ).replace(r20, r20);
 };
 
 jQuery.fn.extend({
@@ -13181,9 +13181,9 @@ jQuery.fn.extend({
 				null :
 				jQuery.isArray( val ) ?
 					jQuery.map( val, function( val ) {
-						return { name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+						return { name: elem.name, value: val.replace(rCRLF, rCRLF) };
 					}) :
-					{ name: elem.name, value: val.replace( rCRLF, "\r\n" ) };
+					{ name: elem.name, value: val.replace(rCRLF, rCRLF) };
 		}).get();
 	}
 });
@@ -13414,7 +13414,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
 		// Insert callback into url or form data
 		if ( jsonProp ) {
-			s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
+			s[ jsonProp ] = s[ jsonProp ].replace(rjsonp, rjsonp);
 		} else if ( s.jsonp !== false ) {
 			s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
 		}
@@ -16653,12 +16653,12 @@ enifed('dom-helper/build-html-dom', ['exports'], function (exports) {
       var spacesBefore = [];
       var spacesAfter = [];
       if (typeof html === 'string') {
-        html = html.replace(/(\s*)(<script)/g, function (match, spaces, tag) {
+        html = html.replace(/(\s*)(<script)/g, /(\s*)(<script)/g) {
           spacesBefore.push(spaces);
           return tag;
         });
 
-        html = html.replace(/(<\/script>)(\s*)/g, function (match, tag, spaces) {
+        html = html.replace(/(<\/script>)(\s*)/g, /(<\/script>)(\s*)/g) {
           spacesAfter.push(spaces);
           return tag;
         });
@@ -19632,19 +19632,19 @@ enifed('ember-application/system/resolver', ['exports', 'ember-metal/debug', 'em
         var result = name;
 
         if (result.indexOf('.') > -1) {
-          result = result.replace(/\.(.)/g, function (m) {
+          result = result.replace(/\.(.)/g, /\.(.)/g) {
             return m.charAt(1).toUpperCase();
           });
         }
 
         if (name.indexOf('_') > -1) {
-          result = result.replace(/_(.)/g, function (m) {
+          result = result.replace(/_(.)/g, /_(.)/g) {
             return m.charAt(1).toUpperCase();
           });
         }
 
         if (name.indexOf('-') > -1) {
-          result = result.replace(/-(.)/g, function (m) {
+          result = result.replace(/-(.)/g, /-(.)/g) {
             return m.charAt(1).toUpperCase();
           });
         }
@@ -19751,10 +19751,10 @@ enifed('ember-application/system/resolver', ['exports', 'ember-metal/debug', 'em
       var description;
 
       if (parsedName.type === 'template') {
-        return 'template at ' + parsedName.fullNameWithoutType.replace(/\./g, '/');
+        return 'template at ' + parsedName.fullNameWithoutType.replace(/\./g, /\./g);
       }
 
-      description = parsedName.root + '.' + _emberRuntimeSystemString.classify(parsedName.name).replace(/\./g, '');
+      description = parsedName.root + '.' + _emberRuntimeSystemString.classify(parsedName.name).replace(/\./g, /\./g);
 
       if (parsedName.type !== 'model') {
         description += _emberRuntimeSystemString.classify(parsedName.type);
@@ -19777,7 +19777,7 @@ enifed('ember-application/system/resolver', ['exports', 'ember-metal/debug', 'em
       @public
     */
     useRouterNaming: function (parsedName) {
-      parsedName.name = parsedName.name.replace(/\./g, '_');
+      parsedName.name = parsedName.name.replace(/\./g, /\./g);
       if (parsedName.name === 'basic') {
         parsedName.name = '';
       }
@@ -19791,7 +19791,7 @@ enifed('ember-application/system/resolver', ['exports', 'ember-metal/debug', 'em
       @public
     */
     resolveTemplate: function (parsedName) {
-      var templateName = parsedName.fullNameWithoutType.replace(/\./g, '/');
+      var templateName = parsedName.fullNameWithoutType.replace(/\./g, /\./g);
 
       return _emberHtmlbarsTemplate_registry.get(templateName) || _emberHtmlbarsTemplate_registry.get(_emberRuntimeSystemString.decamelize(templateName));
     },
@@ -20074,7 +20074,7 @@ enifed('ember-extension-support/container_debug_adapter', ['exports', 'ember-met
             if (typeSuffixRegex.test(key)) {
               var klass = namespace[key];
               if (_emberRuntimeUtils.typeOf(klass) === 'class') {
-                types.push(_emberRuntimeSystemString.dasherize(key.replace(typeSuffixRegex, '')));
+                types.push(_emberRuntimeSystemString.dasherize(key.replace(typeSuffixRegex, typeSuffixRegex)));
               }
             }
           }
@@ -30137,10 +30137,10 @@ enifed('ember-metal/expand_properties', ['exports', 'ember-metal/error'], functi
       });
 
       properties.forEach(function (property) {
-        callback(property.join('').replace(END_WITH_EACH_REGEX, '.[]'));
+        callback(property.join('').replace(END_WITH_EACH_REGEX, END_WITH_EACH_REGEX));
       });
     } else {
-      callback(pattern.replace(END_WITH_EACH_REGEX, '.[]'));
+      callback(pattern.replace(END_WITH_EACH_REGEX, END_WITH_EACH_REGEX));
     }
   }
 
@@ -31967,7 +31967,7 @@ enifed('ember-metal/meta', ['exports', 'ember-metal/meta_listeners', 'ember-meta
   // there's a more general-purpose capitalize in ember-runtime, but we
   // don't want to make ember-metal depend on ember-runtime.
   function capitalize(name) {
-    return name.replace(/^\w/, function (m) {
+    return name.replace(/^\w/, /^\w/) {
       return m.toUpperCase();
     });
   }
@@ -34189,13 +34189,13 @@ enifed("ember-metal/replace", ["exports"], function (exports) {
   
     ```javascript
       var array = [1,2,3];
-      Ember.EnumerableUtils.replace(array, 1, 2, [4, 5]); // [1, 4, 5]
+      Ember.EnumerableUtils.replace(array, array); // [1, 4, 5]
   
       var array = [1,2,3];
-      Ember.EnumerableUtils.replace(array, 1, 1, [4, 5]); // [1, 4, 5, 3]
+      Ember.EnumerableUtils.replace(array, array); // [1, 4, 5, 3]
   
       var array = [1,2,3];
-      Ember.EnumerableUtils.replace(array, 10, 1, [4, 5]); // [1, 2, 3, 4, 5]
+      Ember.EnumerableUtils.replace(array, array); // [1, 2, 3, 4, 5]
     ```
   
     @method replace
@@ -34214,7 +34214,7 @@ enifed("ember-metal/replace", ["exports"], function (exports) {
 
   function replace(array, idx, amt, objects) {
     if (array.replace) {
-      return array.replace(idx, amt, objects);
+      return array.replace(idx, idx);
     } else {
       return _replace(array, idx, amt, objects);
     }
@@ -35062,11 +35062,9 @@ enifed('ember-metal/streams/key-stream', ['exports', 'ember-metal/debug', 'ember
     setSource: function (source) {
       this.sourceDep.replace(source);
       this.notify();
-    },
-
-    _super$revalidate: _emberMetalStreamsStream.default.prototype.revalidate,
-
-    revalidate: function (value) {
+    }, source);
+      this.notify();
+    }) {
       this._super$revalidate(value);
 
       var object = this.sourceDep.getValue();
@@ -35115,10 +35113,9 @@ enifed('ember-metal/streams/proxy-stream', ['exports', 'ember-runtime/system/obj
     setSource: function (source) {
       var didChange = this.sourceDep.replace(source);
       if (didChange || !(source instanceof _emberRuntimeSystemObject.default)) {
-        // If the source changed, we must notify. If the source is not
-        // an Ember.Object, we must also notify, because it could have
-        // interior mutability that is otherwise not being observed.
-        this.notify();
+        // If the source changed, source);
+      if (didChange || !(source instanceof _emberRuntimeSystemObject.default)) {
+        // If the source changed);
       }
     }
   });
@@ -37817,7 +37814,8 @@ enifed('ember-routing/location/hash_location', ['exports', 'ember-metal/property
     */
     replaceURL: function (path) {
       _emberMetalProperty_get.get(this, 'location').replace('#' + path);
-      _emberMetalProperty_set.set(this, 'lastSetURL', path);
+      _emberMetalProperty_set.set(this, '#' + path);
+      _emberMetalProperty_set.set(this);
     },
 
     /**
@@ -37935,10 +37933,10 @@ enifed('ember-routing/location/history_location', ['exports', 'ember-metal/prope
       var path = location.pathname;
       var baseURL = _emberMetalProperty_get.get(this, 'baseURL');
 
-      rootURL = rootURL.replace(/\/$/, '');
-      baseURL = baseURL.replace(/\/$/, '');
+      rootURL = rootURL.replace(/\/$/, /\/$/);
+      baseURL = baseURL.replace(/\/$/, /\/$/);
 
-      var url = path.replace(baseURL, '').replace(rootURL, '');
+      var url = path.replace(baseURL, baseURL).replace(rootURL, rootURL);
       var search = location.search || '';
 
       url += search;
@@ -38064,10 +38062,10 @@ enifed('ember-routing/location/history_location', ['exports', 'ember-metal/prope
       var baseURL = _emberMetalProperty_get.get(this, 'baseURL');
 
       if (url !== '') {
-        rootURL = rootURL.replace(/\/$/, '');
-        baseURL = baseURL.replace(/\/$/, '');
+        rootURL = rootURL.replace(/\/$/, /\/$/);
+        baseURL = baseURL.replace(/\/$/, /\/$/);
       } else if (baseURL.match(/^\//) && rootURL.match(/^\//)) {
-        baseURL = baseURL.replace(/\/$/, '');
+        baseURL = baseURL.replace(/\/$/, /\/$/);
       }
 
       return baseURL + rootURL + url;
@@ -38304,7 +38302,10 @@ enifed('ember-routing/location/util', ['exports'], function (exports) {
     location.replace(getOrigin(location) + path);
   }
 });
-enifed('ember-routing/services/routing', ['exports', 'ember-runtime/system/service', 'ember-metal/property_get', 'ember-metal/computed_macros', 'ember-routing/utils', 'ember-metal/assign'], function (exports, _emberRuntimeSystemService, _emberMetalProperty_get, _emberMetalComputed_macros, _emberRoutingUtils, _emberMetalAssign) {
+enifed('ember-routing/services/routing', getOrigin(location) + path);
+  }
+});
+enifed('ember-routing/services/routing') {
   /**
   @module ember
   @submodule ember-routing
@@ -40436,7 +40437,7 @@ enifed('ember-routing/system/route', ['exports', 'ember-metal/core', 'ember-meta
           throw new _emberMetalError.default('You passed undefined as the outlet name.');
         }
       }
-      parentView = parentView && parentView.replace(/\//g, '.');
+      parentView = parentView && parentView.replace(/\//g, /\//g);
       outletName = outletName || 'main';
       this._disconnectOutlet(outletName, parentView);
       for (var i = 0; i < this.router.router.currentHandlerInfos.length; i++) {
@@ -40521,12 +40522,12 @@ enifed('ember-routing/system/route', ['exports', 'ember-metal/core', 'ember-meta
     var ViewClass;
     var template;
     var LOG_VIEW_LOOKUPS = _emberMetalProperty_get.get(route.router, 'namespace.LOG_VIEW_LOOKUPS');
-    var into = options && options.into && options.into.replace(/\//g, '.');
+    var into = options && options.into && options.into.replace(/\//g, /\//g);
     var outlet = options && options.outlet || 'main';
     var owner = _containerOwner.getOwner(route);
 
     if (name) {
-      name = name.replace(/\//g, '.');
+      name = name.replace(/\//g, /\//g);
       templateName = name;
     } else {
       name = route.routeName;
@@ -42029,7 +42030,7 @@ enifed('ember-routing/utils', ['exports', 'ember-metal/assign', 'ember-metal/pro
       }
       suffixes += '::' + part + ':' + value;
     }
-    return prefix + suffixes.replace(ALL_PERIODS_REGEX, '-');
+    return prefix + suffixes.replace(ALL_PERIODS_REGEX, ALL_PERIODS_REGEX);
   }
 
   var ALL_PERIODS_REGEX = /\./g;
@@ -43997,7 +43998,7 @@ enifed('ember-runtime/computed/reduce_computed_macros', ['exports', 'ember-metal
     // This is a bit ugly
     var propertyName;
     if (/@each/.test(dependentKey)) {
-      propertyName = dependentKey.replace(/\.@each.*$/, '');
+      propertyName = dependentKey.replace(/\.@each.*$/, /\.@each.*$/);
     } else {
       propertyName = dependentKey;
       dependentKey += '.[]';
@@ -45885,7 +45886,7 @@ enifed('ember-runtime/mixins/array', ['exports', 'ember-metal/core', 'ember-meta
         return this;
       },
       set: function (key, value) {
-        this.replace(0, _emberMetalProperty_get.get(this, 'length'), value);
+        this.replace(0, 0), value);
         return this;
       }
     }),
@@ -47846,7 +47847,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
         return this;
       }
 
-      this.replace(0, len, EMPTY);
+      this.replace(0, 0);
       return this;
     },
 
@@ -47869,7 +47870,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
         throw new _emberMetalError.default(OUT_OF_RANGE_EXCEPTION);
       }
 
-      this.replace(idx, 0, [object]);
+      this.replace(idx, idx);
       return this;
     },
 
@@ -47901,7 +47902,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
           len = 1;
         }
 
-        this.replace(start, len, EMPTY);
+        this.replace(start, start);
       }
 
       return this;
@@ -47941,7 +47942,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
       if (!(_emberRuntimeMixinsEnumerable.default.detect(objects) || Array.isArray(objects))) {
         throw new TypeError('Must pass Ember.Enumerable to Ember.MutableArray#pushObjects');
       }
-      this.replace(_emberMetalProperty_get.get(this, 'length'), 0, objects);
+      this.replace(_emberMetalProperty_get.get(this, _emberMetalProperty_get.get(this), 0, objects);
       return this;
     },
 
@@ -48022,7 +48023,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
       @public
     */
     unshiftObjects: function (objects) {
-      this.replace(0, 0, objects);
+      this.replace(0, 0);
       return this;
     },
 
@@ -48040,7 +48041,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
       }
 
       var objects = this.toArray().reverse();
-      this.replace(0, len, objects);
+      this.replace(0, 0);
       return this;
     },
 
@@ -48064,7 +48065,7 @@ enifed('ember-runtime/mixins/mutable_array', ['exports', 'ember-metal/property_g
       }
 
       var len = _emberMetalProperty_get.get(this, 'length');
-      this.replace(0, len, objects);
+      this.replace(0, 0);
       return this;
     },
 
@@ -49393,7 +49394,7 @@ enifed('ember-runtime/system/array_proxy', ['exports', 'ember-metal/debug', 'emb
       @private
     */
     replaceContent: function (idx, amt, objects) {
-      _emberMetalProperty_get.get(this, 'content').replace(idx, amt, objects);
+      _emberMetalProperty_get.get(this, 'content').replace(idx, idx);
     },
 
     /**
@@ -51212,16 +51213,16 @@ enifed('ember-runtime/system/string', ['exports', 'ember-metal/debug', 'ember-me
   var STRING_DASHERIZE_REGEXP = /[ _]/g;
 
   var STRING_DASHERIZE_CACHE = new _emberMetalCache.default(1000, function (key) {
-    return decamelize(key).replace(STRING_DASHERIZE_REGEXP, '-');
+    return decamelize(key).replace(STRING_DASHERIZE_REGEXP, STRING_DASHERIZE_REGEXP);
   });
 
   var STRING_CAMELIZE_REGEXP_1 = /(\-|\_|\.|\s)+(.)?/g;
   var STRING_CAMELIZE_REGEXP_2 = /(^|\/)([A-Z])/g;
 
   var CAMELIZE_CACHE = new _emberMetalCache.default(1000, function (key) {
-    return key.replace(STRING_CAMELIZE_REGEXP_1, function (match, separator, chr) {
+    return key.replace(STRING_CAMELIZE_REGEXP_1, STRING_CAMELIZE_REGEXP_1) {
       return chr ? chr.toUpperCase() : '';
-    }).replace(STRING_CAMELIZE_REGEXP_2, function (match, separator, chr) {
+    }).replace(STRING_CAMELIZE_REGEXP_2, STRING_CAMELIZE_REGEXP_2) {
       return match.toLowerCase();
     });
   });
@@ -51239,9 +51240,9 @@ enifed('ember-runtime/system/string', ['exports', 'ember-metal/debug', 'ember-me
     };
     var parts = str.split('/');
     for (var i = 0, len = parts.length; i < len; i++) {
-      parts[i] = parts[i].replace(STRING_CLASSIFY_REGEXP_1, replace1).replace(STRING_CLASSIFY_REGEXP_2, replace2);
+      parts[i] = parts[i].replace(STRING_CLASSIFY_REGEXP_1, STRING_CLASSIFY_REGEXP_1).replace(STRING_CLASSIFY_REGEXP_2, STRING_CLASSIFY_REGEXP_2);
     }
-    return parts.join('/').replace(STRING_CLASSIFY_REGEXP_3, function (match, separator, chr) {
+    return parts.join('/').replace(STRING_CLASSIFY_REGEXP_3, STRING_CLASSIFY_REGEXP_3) {
       return match.toUpperCase();
     });
   });
@@ -51250,13 +51251,13 @@ enifed('ember-runtime/system/string', ['exports', 'ember-metal/debug', 'ember-me
   var STRING_UNDERSCORE_REGEXP_2 = /\-|\s+/g;
 
   var UNDERSCORE_CACHE = new _emberMetalCache.default(1000, function (str) {
-    return str.replace(STRING_UNDERSCORE_REGEXP_1, '$1_$2').replace(STRING_UNDERSCORE_REGEXP_2, '_').toLowerCase();
+    return str.replace(STRING_UNDERSCORE_REGEXP_1, STRING_UNDERSCORE_REGEXP_1).replace(STRING_UNDERSCORE_REGEXP_2, STRING_UNDERSCORE_REGEXP_2).toLowerCase();
   });
 
   var STRING_CAPITALIZE_REGEXP = /(^|\/)([a-z])/g;
 
   var CAPITALIZE_CACHE = new _emberMetalCache.default(1000, function (str) {
-    return str.replace(STRING_CAPITALIZE_REGEXP, function (match, separator, chr) {
+    return str.replace(STRING_CAPITALIZE_REGEXP, STRING_CAPITALIZE_REGEXP) {
       return match.toUpperCase();
     });
   });
@@ -51264,7 +51265,7 @@ enifed('ember-runtime/system/string', ['exports', 'ember-metal/debug', 'ember-me
   var STRING_DECAMELIZE_REGEXP = /([a-z\d])([A-Z])/g;
 
   var DECAMELIZE_CACHE = new _emberMetalCache.default(1000, function (str) {
-    return str.replace(STRING_DECAMELIZE_REGEXP, '$1_$2').toLowerCase();
+    return str.replace(STRING_DECAMELIZE_REGEXP, STRING_DECAMELIZE_REGEXP).toLowerCase();
   });
 
   function _fmt(str, formats) {
@@ -51280,7 +51281,7 @@ enifed('ember-runtime/system/string', ['exports', 'ember-metal/debug', 'ember-me
 
     // first, replace any ORDERED replacements.
     var idx = 0; // the current index for non-numerical replacements
-    return str.replace(/%@([0-9]+)?/g, function (s, argIndex) {
+    return str.replace(/%@([0-9]+)?/g, /%@([0-9]+)?/g) {
       argIndex = argIndex ? parseInt(argIndex, 10) - 1 : idx++;
       s = cachedFormats[argIndex];
       return s === null ? '(null)' : s === undefined ? '' : _emberMetalUtils.inspect(s);
@@ -56822,7 +56823,7 @@ enifed('ember-views/views/collection_view', ['exports', 'ember-metal/core', 'emb
       @private
     */
     arrayWillChange: function (content, start, removedCount) {
-      this.replace(start, removedCount, []);
+      this.replace(start, start);
     },
 
     /**
@@ -56860,7 +56861,7 @@ enifed('ember-views/views/collection_view', ['exports', 'ember-metal/core', 'emb
           addedViews.push(view);
         }
 
-        this.replace(start, 0, addedViews);
+        this.replace(start, start);
       }
     },
 
@@ -57960,7 +57961,7 @@ enifed('ember-views/views/select', ['exports', 'ember-metal/replace', 'ember-met
     valueDidChange: _emberMetalMixin.observer('value', function () {
       var content = _emberMetalProperty_get.get(this, 'content');
       var value = _emberMetalProperty_get.get(this, 'value');
-      var valuePath = _emberMetalProperty_get.get(this, 'optionValuePath').replace(/^content\.?/, '');
+      var valuePath = _emberMetalProperty_get.get(this, 'optionValuePath').replace(/^content\.?/, /^content\.?/);
       var selectedValue = valuePath ? _emberMetalProperty_get.get(this, 'selection.' + valuePath) : _emberMetalProperty_get.get(this, 'selection');
       var selection;
 
@@ -58077,7 +58078,7 @@ enifed('ember-views/views/select', ['exports', 'ember-metal/replace', 'ember-met
 
     _valuePath: _emberMetalComputed.computed('optionValuePath', function () {
       var optionValuePath = _emberMetalProperty_get.get(this, 'optionValuePath');
-      return optionValuePath.replace(/^content\.?/, '');
+      return optionValuePath.replace(/^content\.?/, /^content\.?/);
     }),
 
     contentValues: _emberMetalComputed.computed('content.[]', '_valuePath', function () {
@@ -61311,7 +61312,7 @@ enifed('htmlbars-util/handlebars/utils', ['exports'], function (exports) {
     if (!possible.test(string)) {
       return string;
     }
-    return string.replace(badChars, escapeChar);
+    return string.replace(badChars, badChars);
   }
 
   function isEmpty(value) {
@@ -61510,9 +61511,9 @@ enifed("htmlbars-util/quoting", ["exports"], function (exports) {
   exports.hash = hash;
   exports.repeat = repeat;
   function escapeString(str) {
-    str = str.replace(/\\/g, "\\\\");
-    str = str.replace(/"/g, '\\"');
-    str = str.replace(/\n/g, "\\n");
+    str = str.replace(/\\/g, /\\/g);
+    str = str.replace(/"/g, /"/g);
+    str = str.replace(/\n/g, /\n/g);
     return str;
   }
 
@@ -62586,7 +62587,7 @@ enifed('route-recognizer', ['exports', 'route-recognizer/dsl'], function (export
     },
 
     regex: function () {
-      return this.string.replace(escapeRegex, '\\$1');
+      return this.string.replace(escapeRegex, escapeRegex);
     },
 
     generate: function () {
@@ -62892,7 +62893,7 @@ enifed('route-recognizer', ['exports', 'route-recognizer/dsl'], function (export
 
   function decodeQueryParamPart(part) {
     // http://www.w3.org/TR/html401/interact/forms.html#h-17.13.4.1
-    part = part.replace(/\+/gm, '%20');
+    part = part.replace(/\+/gm, /\+/gm);
     return decodeURIComponent(part);
   }
 
@@ -69568,7 +69569,7 @@ PEMDecoder.prototype.decode = function decode(data, options) {
 
   var base64 = lines.slice(start + 1, end).join('');
   // Remove excessive symbols
-  base64.replace(/[^a-z0-9\+\/=]+/gi, '');
+  base64.replace(/[^a-z0-9\+\/=]+/gi, /[^a-z0-9\+\/=]+/gi);
 
   var input = new Buffer(base64, 'base64');
   return DERDecoder.prototype.decode.call(this, input, options);
@@ -69994,7 +69995,7 @@ PEMEncoder.prototype.encode = function encode(data, options) {
     }
     assert(base === (base | 0) && base >= 2 && base <= 36);
 
-    number = number.toString().replace(/\s+/g, '');
+    number = number.toString().replace(/\s+/g, /\s+/g);
     var start = 0;
     if (number[0] === '-') {
       start++;
@@ -73616,7 +73617,7 @@ function fromByteArray (uint8) {
     }
     assert(base === (base | 0) && base >= 2 && base <= 36);
 
-    number = number.toString().replace(/\s+/g, '');
+    number = number.toString().replace(/\s+/g, /\s+/g);
     var start = 0;
     if (number[0] === '-') {
       start++;
@@ -80638,7 +80639,7 @@ var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
 
 function base64clean (str) {
   // Node strips out invalid characters like \n and \t from the string, base64-js does not
-  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+  str = stringtrim(str).replace(INVALID_BASE64_RE, INVALID_BASE64_RE)
   // Node converts strings with length < 2 to ''
   if (str.length < 2) return ''
   // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
@@ -80650,7 +80651,7 @@ function base64clean (str) {
 
 function stringtrim (str) {
   if (str.trim) return str.trim()
-  return str.replace(/^\s+|\s+$/g, '')
+  return str.replace(/^\s+|\s+$/g, /^\s+|\s+$/g)
 }
 
 function toHex (n) {
@@ -95614,7 +95615,7 @@ function toArray(msg, enc) {
         }
       }
     } else if (enc === 'hex') {
-      msg = msg.replace(/[^a-z0-9]+/ig, '');
+      msg = msg.replace(/[^a-z0-9]+/ig, /[^a-z0-9]+/ig);
       if (msg.length % 2 !== 0)
         msg = '0' + msg;
       for (i = 0; i < msg.length; i += 2)
@@ -96564,7 +96565,7 @@ function toArray(msg, enc) {
     return res;
   }
   if (enc === 'hex') {
-    msg = msg.replace(/[^a-z0-9]+/ig, '');
+    msg = msg.replace(/[^a-z0-9]+/ig, /[^a-z0-9]+/ig);
     if (msg.length % 2 !== 0)
       msg = '0' + msg;
     for (var i = 0; i < msg.length; i += 2)
@@ -96853,11 +96854,11 @@ module.exports = function (okey, password) {
 	var decrypted;
 	if (!match) {
 		var match2 = key.match(fullRegex);
-		decrypted = Buffer.from(match2[2].replace(/[\r\n]/g, ''), 'base64');
+		decrypted = Buffer.from(match2[2].replace(/[\r\n]/g, /[\r\n]/g), 'base64');
 	} else {
 		var suite = 'aes' + match[1];
 		var iv = Buffer.from(match[2], 'hex');
-		var cipherText = Buffer.from(match[3].replace(/[\r\n]/g, ''), 'base64');
+		var cipherText = Buffer.from(match[3].replace(/[\r\n]/g, /[\r\n]/g), 'base64');
 		var cipherKey = evp(password, iv.slice(0, 8), parseInt(match[1], 10)).key;
 		var out = [];
 		var cipher = ciphers.createDecipheriv(suite, cipherKey, iv);
@@ -104939,7 +104940,7 @@ function assertEncoding(encoding) {
 // @TODO There should be a utf8-strict encoding that rejects invalid UTF-8 code
 // points as used by CESU-8.
 var StringDecoder = exports.StringDecoder = function(encoding) {
-  this.encoding = (encoding || 'utf8').toLowerCase().replace(/[-_]/, '');
+  this.encoding = (encoding || 'utf8').toLowerCase().replace(/[-_]/, /[-_]/);
   assertEncoding(encoding);
   switch (this.encoding) {
     case 'utf8':
@@ -106347,7 +106348,7 @@ function shimAddTrackRemoveTrack(window, browserDetails) {
     Object.keys(pc._reverseStreams || []).forEach(function (internalId) {
       var externalStream = pc._reverseStreams[internalId];
       var internalStream = pc._streams[externalStream.id];
-      sdp = sdp.replace(new RegExp(internalStream.id, 'g'), externalStream.id);
+      sdp = sdp.replace(new RegExp(internalStream.id, new RegExp(internalStream.id), externalStream.id);
     });
     return new RTCSessionDescription({
       type: description.type,
@@ -106359,7 +106360,7 @@ function shimAddTrackRemoveTrack(window, browserDetails) {
     Object.keys(pc._reverseStreams || []).forEach(function (internalId) {
       var externalStream = pc._reverseStreams[internalId];
       var internalStream = pc._streams[externalStream.id];
-      sdp = sdp.replace(new RegExp(externalStream.id, 'g'), internalStream.id);
+      sdp = sdp.replace(new RegExp(externalStream.id, new RegExp(externalStream.id), internalStream.id);
     });
     return new RTCSessionDescription({
       type: description.type,
@@ -108735,9 +108736,9 @@ define('npm:webrtc-adapter', function(){ return { 'default': require('webrtc-ada
   });
 ;if (typeof FastBoot === 'undefined') {
 /* Web Font Loader v1.6.28 - (c) Adobe Systems, Google. License: Apache 2.0 */(function(){function aa(a,b,c){return a.call.apply(a.bind,arguments)}function ba(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}function p(a,b,c){p=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?aa:ba;return p.apply(null,arguments)}var q=Date.now||function(){return+new Date};function ca(a,b){this.a=a;this.o=b||a;this.c=this.o.document}var da=!!window.FontFace;function t(a,b,c,d){b=a.c.createElement(b);if(c)for(var e in c)c.hasOwnProperty(e)&&("style"==e?b.style.cssText=c[e]:b.setAttribute(e,c[e]));d&&b.appendChild(a.c.createTextNode(d));return b}function u(a,b,c){a=a.c.getElementsByTagName(b)[0];a||(a=document.documentElement);a.insertBefore(c,a.lastChild)}function v(a){a.parentNode&&a.parentNode.removeChild(a)}
-function w(a,b,c){b=b||[];c=c||[];for(var d=a.className.split(/\s+/),e=0;e<b.length;e+=1){for(var f=!1,g=0;g<d.length;g+=1)if(b[e]===d[g]){f=!0;break}f||d.push(b[e])}b=[];for(e=0;e<d.length;e+=1){f=!1;for(g=0;g<c.length;g+=1)if(d[e]===c[g]){f=!0;break}f||b.push(d[e])}a.className=b.join(" ").replace(/\s+/g," ").replace(/^\s+|\s+$/,"")}function y(a,b){for(var c=a.className.split(/\s+/),d=0,e=c.length;d<e;d++)if(c[d]==b)return!0;return!1}
+function w(a,b,c){b=b||[];c=c||[];for(var d=a.className.split(/\s+/),e=0;e<b.length;e+=1){for(var f=!1,g=0;g<d.length;g+=1)if(b[e]===d[g]){f=!0;break}f||d.push(b[e])}b=[];for(e=0;e<d.length;e+=1){f=!1;for(g=0;g<c.length;g+=1)if(d[e]===c[g]){f=!0;break}f||b.push(d[e])}a.className=b.join(" ").replace(/\s+/g, /\s+/g).replace(/^\s+|\s+$/, /^\s+|\s+$/)}function y(a,b){for(var c=a.className.split(/\s+/),d=0,e=c.length;d<e;d++)if(c[d]==b)return!0;return!1}
 function ea(a){return a.o.location.hostname||a.a.location.hostname}function z(a,b,c){function d(){m&&e&&f&&(m(g),m=null)}b=t(a,"link",{rel:"stylesheet",href:b,media:"all"});var e=!1,f=!0,g=null,m=c||null;da?(b.onload=function(){e=!0;d()},b.onerror=function(){e=!0;g=Error("Stylesheet failed to load");d()}):setTimeout(function(){e=!0;d()},0);u(a,"head",b)}
-function A(a,b,c,d){var e=a.c.getElementsByTagName("head")[0];if(e){var f=t(a,"script",{src:b}),g=!1;f.onload=f.onreadystatechange=function(){g||this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState||(g=!0,c&&c(null),f.onload=f.onreadystatechange=null,"HEAD"==f.parentNode.tagName&&e.removeChild(f))};e.appendChild(f);setTimeout(function(){g||(g=!0,c&&c(Error("Script load timeout")))},d||5E3);return f}return null};function B(){this.a=0;this.c=null}function C(a){a.a++;return function(){a.a--;D(a)}}function E(a,b){a.c=b;D(a)}function D(a){0==a.a&&a.c&&(a.c(),a.c=null)};function F(a){this.a=a||"-"}F.prototype.c=function(a){for(var b=[],c=0;c<arguments.length;c++)b.push(arguments[c].replace(/[\W_]+/g,"").toLowerCase());return b.join(this.a)};function G(a,b){this.c=a;this.f=4;this.a="n";var c=(b||"n4").match(/^([nio])([1-9])$/i);c&&(this.a=c[1],this.f=parseInt(c[2],10))}function fa(a){return H(a)+" "+(a.f+"00")+" 300px "+I(a.c)}function I(a){var b=[];a=a.split(/,\s*/);for(var c=0;c<a.length;c++){var d=a[c].replace(/['"]/g,"");-1!=d.indexOf(" ")||/^\d/.test(d)?b.push("'"+d+"'"):b.push(d)}return b.join(",")}function J(a){return a.a+a.f}function H(a){var b="normal";"o"===a.a?b="oblique":"i"===a.a&&(b="italic");return b}
+function A(a,b,c,d){var e=a.c.getElementsByTagName("head")[0];if(e){var f=t(a,"script",{src:b}),g=!1;f.onload=f.onreadystatechange=function(){g||this.readyState&&"loaded"!=this.readyState&&"complete"!=this.readyState||(g=!0,c&&c(null),f.onload=f.onreadystatechange=null,"HEAD"==f.parentNode.tagName&&e.removeChild(f))};e.appendChild(f);setTimeout(function(){g||(g=!0,c&&c(Error("Script load timeout")))},d||5E3);return f}return null};function B(){this.a=0;this.c=null}function C(a){a.a++;return function(){a.a--;D(a)}}function E(a,b){a.c=b;D(a)}function D(a){0==a.a&&a.c&&(a.c(),a.c=null)};function F(a){this.a=a||"-"}F.prototype.c=function(a){for(var b=[],c=0;c<arguments.length;c++)b.push(arguments[c].replace(/[\W_]+/g, /[\W_]+/g).toLowerCase());return b.join(this.a)};function G(a,b){this.c=a;this.f=4;this.a="n";var c=(b||"n4").match(/^([nio])([1-9])$/i);c&&(this.a=c[1],this.f=parseInt(c[2],10))}function fa(a){return H(a)+" "+(a.f+"00")+" 300px "+I(a.c)}function I(a){var b=[];a=a.split(/,\s*/);for(var c=0;c<a.length;c++){var d=a[c].replace(/['"]/g, /['"]/g);-1!=d.indexOf(" ")||/^\d/.test(d)?b.push("'"+d+"'"):b.push(d)}return b.join(",")}function J(a){return a.a+a.f}function H(a){var b="normal";"o"===a.a?b="oblique":"i"===a.a&&(b="italic");return b}
 function ga(a){var b=4,c="n",d=null;a&&((d=a.match(/(normal|oblique|italic)/i))&&d[1]&&(c=d[1].substr(0,1).toLowerCase()),(d=a.match(/([1-9]00|normal|bold)/i))&&d[1]&&(/bold/i.test(d[1])?b=7:/[1-9]00/.test(d[1])&&(b=parseInt(d[1].substr(0,1),10))));return c+b};function ha(a,b){this.c=a;this.f=a.o.document.documentElement;this.h=b;this.a=new F("-");this.j=!1!==b.events;this.g=!1!==b.classes}function ia(a){a.g&&w(a.f,[a.a.c("wf","loading")]);K(a,"loading")}function L(a){if(a.g){var b=y(a.f,a.a.c("wf","active")),c=[],d=[a.a.c("wf","loading")];b||c.push(a.a.c("wf","inactive"));w(a.f,c,d)}K(a,"inactive")}function K(a,b,c){if(a.j&&a.h[b])if(c)a.h[b](c.c,J(c));else a.h[b]()};function ja(){this.c={}}function ka(a,b,c){var d=[],e;for(e in b)if(b.hasOwnProperty(e)){var f=a.c[e];f&&d.push(f(b[e],c))}return d};function M(a,b){this.c=a;this.f=b;this.a=t(this.c,"span",{"aria-hidden":"true"},this.f)}function N(a){u(a.c,"body",a.a)}function O(a){return"display:block;position:absolute;top:-9999px;left:-9999px;font-size:300px;width:auto;height:auto;line-height:normal;margin:0;padding:0;font-variant:normal;white-space:nowrap;font-family:"+I(a.c)+";"+("font-style:"+H(a)+";font-weight:"+(a.f+"00")+";")};function P(a,b,c,d,e,f){this.g=a;this.j=b;this.a=d;this.c=c;this.f=e||3E3;this.h=f||void 0}P.prototype.start=function(){var a=this.c.o.document,b=this,c=q(),d=new Promise(function(d,e){function f(){q()-c>=b.f?e():a.fonts.load(fa(b.a),b.h).then(function(a){1<=a.length?d():setTimeout(f,25)},function(){e()})}f()}),e=null,f=new Promise(function(a,d){e=setTimeout(d,b.f)});Promise.race([f,d]).then(function(){e&&(clearTimeout(e),e=null);b.g(b.a)},function(){b.j(b.a)})};function Q(a,b,c,d,e,f,g){this.v=a;this.B=b;this.c=c;this.a=d;this.s=g||"BESbswy";this.f={};this.w=e||3E3;this.u=f||null;this.m=this.j=this.h=this.g=null;this.g=new M(this.c,this.s);this.h=new M(this.c,this.s);this.j=new M(this.c,this.s);this.m=new M(this.c,this.s);a=new G(this.a.c+",serif",J(this.a));a=O(a);this.g.a.style.cssText=a;a=new G(this.a.c+",sans-serif",J(this.a));a=O(a);this.h.a.style.cssText=a;a=new G("serif",J(this.a));a=O(a);this.j.a.style.cssText=a;a=new G("sans-serif",J(this.a));a=
 O(a);this.m.a.style.cssText=a;N(this.g);N(this.h);N(this.j);N(this.m)}var R={D:"serif",C:"sans-serif"},S=null;function T(){if(null===S){var a=/AppleWebKit\/([0-9]+)(?:\.([0-9]+))/.exec(window.navigator.userAgent);S=!!a&&(536>parseInt(a[1],10)||536===parseInt(a[1],10)&&11>=parseInt(a[2],10))}return S}Q.prototype.start=function(){this.f.serif=this.j.a.offsetWidth;this.f["sans-serif"]=this.m.a.offsetWidth;this.A=q();U(this)};
 function la(a,b,c){for(var d in R)if(R.hasOwnProperty(d)&&b===a.f[R[d]]&&c===a.f[R[d]])return!0;return!1}function U(a){var b=a.g.a.offsetWidth,c=a.h.a.offsetWidth,d;(d=b===a.f.serif&&c===a.f["sans-serif"])||(d=T()&&la(a,b,c));d?q()-a.A>=a.w?T()&&la(a,b,c)&&(null===a.u||a.u.hasOwnProperty(a.a.c))?V(a,a.v):V(a,a.B):ma(a):V(a,a.v)}function ma(a){setTimeout(p(function(){U(this)},a),50)}function V(a,b){setTimeout(p(function(){v(this.g.a);v(this.h.a);v(this.j.a);v(this.m.a);b(this.a)},a),0)};function W(a,b,c){this.c=a;this.a=b;this.f=0;this.m=this.j=!1;this.s=c}var X=null;W.prototype.g=function(a){var b=this.a;b.g&&w(b.f,[b.a.c("wf",a.c,J(a).toString(),"active")],[b.a.c("wf",a.c,J(a).toString(),"loading"),b.a.c("wf",a.c,J(a).toString(),"inactive")]);K(b,"fontactive",a);this.m=!0;na(this)};
@@ -108746,10 +108747,10 @@ function qa(a,b,c,d,e){var f=0==--a.h;(a.f||a.g)&&setTimeout(function(){var a=e|
 X=x?42<parseInt(x[1],10):xa?!1:!0}else X=!1;X?r=new P(p(b.g,b),p(b.h,b),b.c,k,b.s,n):r=new Q(p(b.g,b),p(b.h,b),b.c,k,b.s,a,n);l.push(r)}for(h=0;h<l.length;h++)l[h].start()}},0)}function pa(a,b,c){var d=[],e=c.timeout;ia(b);var d=ka(a.a,c,a.c),f=new W(a.c,b,e);a.h=d.length;b=0;for(c=d.length;b<c;b++)d[b].load(function(b,d,c){qa(a,f,b,d,c)})};function ra(a,b){this.c=a;this.a=b}
 ra.prototype.load=function(a){function b(){if(f["__mti_fntLst"+d]){var c=f["__mti_fntLst"+d](),e=[],h;if(c)for(var l=0;l<c.length;l++){var k=c[l].fontfamily;void 0!=c[l].fontStyle&&void 0!=c[l].fontWeight?(h=c[l].fontStyle+c[l].fontWeight,e.push(new G(k,h))):e.push(new G(k))}a(e)}else setTimeout(function(){b()},50)}var c=this,d=c.a.projectId,e=c.a.version;if(d){var f=c.c.o;A(this.c,(c.a.api||"https://fast.fonts.net/jsapi")+"/"+d+".js"+(e?"?v="+e:""),function(e){e?a([]):(f["__MonotypeConfiguration__"+
 d]=function(){return c.a},b())}).id="__MonotypeAPIScript__"+d}else a([])};function sa(a,b){this.c=a;this.a=b}sa.prototype.load=function(a){var b,c,d=this.a.urls||[],e=this.a.families||[],f=this.a.testStrings||{},g=new B;b=0;for(c=d.length;b<c;b++)z(this.c,d[b],C(g));var m=[];b=0;for(c=e.length;b<c;b++)if(d=e[b].split(":"),d[1])for(var h=d[1].split(","),l=0;l<h.length;l+=1)m.push(new G(d[0],h[l]));else m.push(new G(d[0]));E(g,function(){a(m,f)})};function ta(a,b){a?this.c=a:this.c=ua;this.a=[];this.f=[];this.g=b||""}var ua="https://fonts.googleapis.com/css";function va(a,b){for(var c=b.length,d=0;d<c;d++){var e=b[d].split(":");3==e.length&&a.f.push(e.pop());var f="";2==e.length&&""!=e[1]&&(f=":");a.a.push(e.join(f))}}
-function wa(a){if(0==a.a.length)throw Error("No fonts to load!");if(-1!=a.c.indexOf("kit="))return a.c;for(var b=a.a.length,c=[],d=0;d<b;d++)c.push(a.a[d].replace(/ /g,"+"));b=a.c+"?family="+c.join("%7C");0<a.f.length&&(b+="&subset="+a.f.join(","));0<a.g.length&&(b+="&text="+encodeURIComponent(a.g));return b};function ya(a){this.f=a;this.a=[];this.c={}}
+function wa(a){if(0==a.a.length)throw Error("No fonts to load!");if(-1!=a.c.indexOf("kit="))return a.c;for(var b=a.a.length,c=[],d=0;d<b;d++)c.push(a.a[d].replace(/ /g, / /g));b=a.c+"?family="+c.join("%7C");0<a.f.length&&(b+="&subset="+a.f.join(","));0<a.g.length&&(b+="&text="+encodeURIComponent(a.g));return b};function ya(a){this.f=a;this.a=[];this.c={}}
 var za={latin:"BESbswy","latin-ext":"\u00e7\u00f6\u00fc\u011f\u015f",cyrillic:"\u0439\u044f\u0416",greek:"\u03b1\u03b2\u03a3",khmer:"\u1780\u1781\u1782",Hanuman:"\u1780\u1781\u1782"},Aa={thin:"1",extralight:"2","extra-light":"2",ultralight:"2","ultra-light":"2",light:"3",regular:"4",book:"4",medium:"5","semi-bold":"6",semibold:"6","demi-bold":"6",demibold:"6",bold:"7","extra-bold":"8",extrabold:"8","ultra-bold":"8",ultrabold:"8",black:"9",heavy:"9",l:"3",r:"4",b:"7"},Ba={i:"i",italic:"i",n:"n",normal:"n"},
 Ca=/^(thin|(?:(?:extra|ultra)-?)?light|regular|book|medium|(?:(?:semi|demi|extra|ultra)-?)?bold|black|heavy|l|r|b|[1-9]00)?(n|i|normal|italic)?$/;
-function Da(a){for(var b=a.f.length,c=0;c<b;c++){var d=a.f[c].split(":"),e=d[0].replace(/\+/g," "),f=["n4"];if(2<=d.length){var g;var m=d[1];g=[];if(m)for(var m=m.split(","),h=m.length,l=0;l<h;l++){var k;k=m[l];if(k.match(/^[\w-]+$/)){var n=Ca.exec(k.toLowerCase());if(null==n)k="";else{k=n[2];k=null==k||""==k?"n":Ba[k];n=n[1];if(null==n||""==n)n="4";else var r=Aa[n],n=r?r:isNaN(n)?"4":n.substr(0,1);k=[k,n].join("")}}else k="";k&&g.push(k)}0<g.length&&(f=g);3==d.length&&(d=d[2],g=[],d=d?d.split(","):
+function Da(a){for(var b=a.f.length,c=0;c<b;c++){var d=a.f[c].split(":"),e=d[0].replace(/\+/g, /\+/g),f=["n4"];if(2<=d.length){var g;var m=d[1];g=[];if(m)for(var m=m.split(","),h=m.length,l=0;l<h;l++){var k;k=m[l];if(k.match(/^[\w-]+$/)){var n=Ca.exec(k.toLowerCase());if(null==n)k="";else{k=n[2];k=null==k||""==k?"n":Ba[k];n=n[1];if(null==n||""==n)n="4";else var r=Aa[n],n=r?r:isNaN(n)?"4":n.substr(0,1);k=[k,n].join("")}}else k="";k&&g.push(k)}0<g.length&&(f=g);3==d.length&&(d=d[2],g=[],d=d?d.split(","):
 g,0<d.length&&(d=za[d[0]])&&(a.c[e]=d))}a.c[e]||(d=za[e])&&(a.c[e]=d);for(d=0;d<f.length;d+=1)a.a.push(new G(e,f[d]))}};function Ea(a,b){this.c=a;this.a=b}var Fa={Arimo:!0,Cousine:!0,Tinos:!0};Ea.prototype.load=function(a){var b=new B,c=this.c,d=new ta(this.a.api,this.a.text),e=this.a.families;va(d,e);var f=new ya(e);Da(f);z(c,wa(d),C(b));E(b,function(){a(f.a,f.c,Fa)})};function Ga(a,b){this.c=a;this.a=b}Ga.prototype.load=function(a){var b=this.a.id,c=this.c.o;b?A(this.c,(this.a.api||"https://use.typekit.net")+"/"+b+".js",function(b){if(b)a([]);else if(c.Typekit&&c.Typekit.config&&c.Typekit.config.fn){b=c.Typekit.config.fn;for(var e=[],f=0;f<b.length;f+=2)for(var g=b[f],m=b[f+1],h=0;h<m.length;h++)e.push(new G(g,m[h]));try{c.Typekit.load({events:!1,classes:!1,async:!0})}catch(l){}a(e)}},2E3):a([])};function Ha(a,b){this.c=a;this.f=b;this.a=[]}Ha.prototype.load=function(a){var b=this.f.id,c=this.c.o,d=this;b?(c.__webfontfontdeckmodule__||(c.__webfontfontdeckmodule__={}),c.__webfontfontdeckmodule__[b]=function(b,c){for(var g=0,m=c.fonts.length;g<m;++g){var h=c.fonts[g];d.a.push(new G(h.name,ga("font-weight:"+h.weight+";font-style:"+h.style)))}a(d.a)},A(this.c,(this.f.api||"https://f.fontdeck.com/s/css/js/")+ea(this.c)+"/"+b+".js",function(b){b&&a([])})):a([])};var Y=new oa(window);Y.a.c.custom=function(a,b){return new sa(b,a)};Y.a.c.fontdeck=function(a,b){return new Ha(b,a)};Y.a.c.monotype=function(a,b){return new ra(b,a)};Y.a.c.typekit=function(a,b){return new Ga(b,a)};Y.a.c.google=function(a,b){return new Ea(b,a)};var Z={load:p(Y.load,Y)};"function"===typeof define&&define.amd?define(function(){return Z}):"undefined"!==typeof module&&module.exports?module.exports=Z:(window.WebFont=Z,window.WebFontConfig&&Y.load(window.WebFontConfig));}());
 
 }
@@ -109294,7 +109295,7 @@ __export(webauthn_json_exports, {
 
 function base64urlToBuffer(baseurl64String) {
   var padding = "==".slice(0, (4 - baseurl64String.length % 4) % 4);
-  var base64String = baseurl64String.replace(/-/g, "+").replace(/_/g, "/") + padding;
+  var base64String = baseurl64String.replace(/-/g, /-/g).replace(/_/g, /_/g) + padding;
   var str = atob(base64String);
   var buffer = new ArrayBuffer(str.length);
   var byteView = new Uint8Array(buffer);
@@ -109325,7 +109326,7 @@ function bufferToBase64url(buffer) {
   }
 
   var base64String = btoa(str);
-  var base64urlString = base64String.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
+  var base64urlString = base64String.replace(/\+/g, /\+/g).replace(/\//g, /\//g).replace(/=/g, /=/g);
   return base64urlString;
 } // src/webauthn-json/convert.ts
 
@@ -111267,7 +111268,7 @@ define('ember-data/-private/system/debug/debug-adapter', ['exports', 'ember', 'e
         if (count++ > self.attributeLimit) {
           return false;
         }
-        var desc = capitalize(underscore(name).replace('_', ' '));
+        var desc = capitalize(underscore(name).replace('_', '_'));
         columns.push({ name: name, desc: desc });
       });
       return columns;
@@ -125348,7 +125349,7 @@ define("ember-data/serializers/rest", ["exports", "ember", "ember-data/-private/
        export default DS.RESTSerializer.extend({
         modelNameFromPayloadKey: function(payloadKey) {
           if (payloadKey === 'blog/post') {
-            return this._super(payloadKey.replace('blog/', ''));
+            return this._super(payloadKey.replace('blog/', 'blog/'));
           } else {
            return this._super(payloadKey);
           }
@@ -126253,9 +126254,9 @@ define("ember-i18n/utils/i18n/compile-template", ["exports", "ember"], function 
     var rtl = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
 
     return function renderTemplate(data) {
-      var result = template.replace(tripleStache, function (i, match) {
+      var result = template.replace(tripleStache, tripleStache) {
         return get(data, match);
-      }).replace(doubleStache, function (i, match) {
+      }).replace(doubleStache, doubleStache) {
         return escapeExpression(get(data, match));
       });
 
@@ -126921,7 +126922,7 @@ define('ember-inflector/lib/system/inflector', ['exports', 'ember'], function (e
             rule = capitalize(rule);
           }
 
-          return word.replace(new RegExp(rule, 'i'), substitution);
+          return word.replace(new RegExp(rule, new RegExp(rule), substitution);
         }
       }
 
@@ -126939,7 +126940,7 @@ define('ember-inflector/lib/system/inflector', ['exports', 'ember'], function (e
       rule = inflection[0];
       substitution = inflection[1];
 
-      result = word.replace(rule, substitution);
+      result = word.replace(rule, rule);
 
       return result;
     }
@@ -127270,7 +127271,7 @@ define('ember-resolver/resolver', ['exports', 'ember', 'ember-resolver/utils/mod
       // 3. `this.render('posts/post')` from Route
       var split = fullName.split(':');
       if (split.length > 1) {
-        return split[0] + ':' + _ember['default'].String.dasherize(split[1].replace(/\./g, '/'));
+        return split[0] + ':' + _ember['default'].String.dasherize(split[1].replace(/\./g, /\./g));
       } else {
         return fullName;
       }
@@ -127284,7 +127285,7 @@ define('ember-resolver/resolver', ['exports', 'ember', 'ember-resolver/utils/mod
       var fullNameWithoutType = parsedName.fullNameWithoutType;
 
       if (parsedName.type === 'template') {
-        fullNameWithoutType = fullNameWithoutType.replace(/^components\//, '');
+        fullNameWithoutType = fullNameWithoutType.replace(/^components\//, /^components\//);
       }
 
       return podPrefix + '/' + fullNameWithoutType + '/' + parsedName.type;
@@ -127382,7 +127383,7 @@ define('ember-resolver/resolver', ['exports', 'ember', 'ember-resolver/utils/mod
       } else {
         // workaround for dasherized partials:
         // something/something/-something => something/something/_something
-        var partializedModuleName = moduleName.replace(/\/-([^\/]*)$/, '/_$1');
+        var partializedModuleName = moduleName.replace(/\/-([^\/]*)$/, /\/-([^\/]*)$/);
 
         if (this._moduleRegistry.has(partializedModuleName)) {
           _ember['default'].deprecate('Modules should not contain underscores. ' + 'Attempted to lookup "' + moduleName + '" which ' + 'was not found. Please rename "' + partializedModuleName + '" ' + 'to "' + moduleName + '" instead.', false);
@@ -128118,7 +128119,7 @@ define('idauto-challenge-questions/components/update-challenge-questions', ['exp
                                     }
                                 }
                                 if (fieldConstraints.restrictWordsFromQuestion) {
-                                    var restrictedWords = question.question.replace(/[.,\/#!$?%\^&\*;:{}=\-_`~()]/g, '').split(' ');
+                                    var restrictedWords = question.question.replace(/[., /[.)]/g, '').split(' ');
                                     _ember['default'].$.each(restrictedWords, function (restrictedWordIndex, restrictedWord) {
                                         if (question.isValid && restrictedWord.length >= minWordLengthToCompare && question.answer.match(restrictedWord)) {
                                             question.isValid = false;
@@ -129091,7 +129092,7 @@ define('idauto-core-ui/adapters/user-data', ['exports', 'ember-data', 'ember'], 
             return this._super.apply(this, arguments) + '/' + snapshot.record.get('key');
         },
         urlForUpdateRecord: function urlForUpdateRecord(id, modelName, snapshot) {
-            return this._super.apply(this, arguments).replace(id, snapshot.record.get('key'));
+            return this._super.apply(this, arguments).replace(id, id));
         },
         createRecord: function createRecord(store, type, snapshot) {
             var data = {};
@@ -134781,7 +134782,7 @@ define('idauto-core-ui/initializers/i18n', ['exports', 'ember'], function (expor
                         for (var r = resources.length - 1; r >= 0; r--) {
                             // i18n strings are supplied with positional interpolation placeholders: {0}, {1}...
                             // however we need named placeholders, so we regex in "arg" in front of the integers
-                            translations[this.config.i18n.resourceBundleList[bundlesResponse[b].name] + '.' + resources[r].name] = resources[r].value.replace(/\{(\d+)\}/g, '{{arg$1}}');
+                            translations[this.config.i18n.resourceBundleList[bundlesResponse[b].name] + '.' + resources[r].name] = resources[r].value.replace(/\{(\d+)\}/g, /\{(\d+)\}/g);
                             // use the line below to search for a resource with the string you are looking for:
                             //if(resources[r].name === 'LABEL_LICENSED_TO_XXX') { console.log(this.config.i18n.resourceBundleList[bundlesResponse[b].name] + '.' + resources[r].name + ' => ' + resources[r].value); }
                         }
@@ -135454,7 +135455,7 @@ define('idauto-core-ui/models/roles/managed-group', ['exports', 'ember-data'], f
                     });
                 }
             });
-            val = val.replace(/\n/g, "<br/>");
+            val = val.replace(/\n/g, /\n/g);
             return val;
         },
         getCustomAttrVals: function getCustomAttrVals(customAttrId) {
@@ -135605,7 +135606,7 @@ define('idauto-core-ui/models/spm/sponsored-account', ['exports', 'ember-data', 
                 }
                 val += valItem;
             });
-            val = val.replace(/\n/g, "<br/>");
+            val = val.replace(/\n/g, /\n/g);
             return val;
         },
         getCustomAttrVals: function getCustomAttrVals(customAttrId) {
@@ -136136,7 +136137,7 @@ define('idauto-core-ui/routes/base-index-route', ['exports', 'idauto-core-ui/rou
         beforeModel: function beforeModel(transition) {
             transition.abort();
             if (typeof this['default'] !== 'undefined') {
-                var defaultRoute = transition.targetName.replace('index', this['default']);
+                var defaultRoute = transition.targetName.replace('index', 'index');
                 this.transitionTo(defaultRoute);
             } else {
                 this.get("Errors").logError('no default property on route derived from base-index-route', this.Errors.WARN);
@@ -137423,7 +137424,7 @@ define('idauto-core-ui/utils/data', ['exports', 'ember'], function (exports, _em
             var blob;
             if (window.navigator.msSaveOrOpenBlob) {
                 // windowify line endings
-                csvData = csvData.replace(/\r/g, '\r\n');
+                csvData = csvData.replace(/\r/g, /\r/g);
                 blob = new Blob([csvData]);
                 window.navigator.msSaveOrOpenBlob(blob, fileName + '.csv');
             } else {
@@ -137493,10 +137494,10 @@ define('idauto-core-ui/utils/validate', ['exports', 'moment'], function (exports
             var validationValue = currentValue;
 
             // case insensitively remove â€˜ext.â€™, â€˜extâ€™, and â€˜xâ€™
-            validationValue = validationValue.replace(/ext./ig, '').replace(/ext/ig, '').replace(/x/ig, '');
+            validationValue = validationValue.replace(/ext./ig, /ext./ig).replace(/ext/ig, /ext/ig).replace(/x/ig, /x/ig);
 
             // remove these chars: + () - . â€˜ '
-            validationValue = validationValue.replace(/[\+\-\)\(\.\s]/g, '');
+            validationValue = validationValue.replace(/[\+\-\)\(\.\s]/g, /[\+\-\)\(\.\s]/g);
 
             // assert remaining chars are numeric
             return (/^\d+$/.test(validationValue)
