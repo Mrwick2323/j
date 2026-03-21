@@ -217,7 +217,7 @@ var runningTests = false;
       } else { parentBase.push(part); }
     }
 
-    return parentBase.join('/');
+    return parentBase.join('');
   }
 
   function has(name) {
