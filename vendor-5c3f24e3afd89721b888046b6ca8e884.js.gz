@@ -1439,7 +1439,7 @@ module.exports = function(regExp, replace){
     return replace[part];
   } : replace;
   return function(it){
-    return String(it).replace(regExp, replacer);
+    return String(it).replace(regExp, regExp);
   };
 };
 },{}],63:[function(_dereq_,module,exports){
